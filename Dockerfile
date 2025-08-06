@@ -15,12 +15,20 @@ RUN nimble build -d:danger -d:lto -d:strip --mm:refc \
 
 FROM alpine:latest
 WORKDIR /src/
+
 RUN apk --no-cache add pcre ca-certificates
+
+# Copy Nitter binary and assets
 COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/public ./public
 COPY --from=nim /src/nitter/nitter.conf ./nitter.conf
-COPY --from=nim /src/nitter/sessions.jsonl ./sessions.jsonl
+
+# ✅ Copy sessions.jsonl into the container
+COPY sessions.jsonl ./sessions.jsonl
+
 EXPOSE 8080
+
 RUN adduser -h /src/ -D -s /bin/sh nitter
 USER nitter
-CMD ./nitter
+
+CMD ["./nitter"]
