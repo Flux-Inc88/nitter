@@ -23,9 +23,6 @@ COPY --from=nim /src/nitter/nitter ./
 COPY --from=nim /src/nitter/public ./public
 COPY --from=nim /src/nitter/nitter.conf ./nitter.conf
 
-# ✅ Copy sessions.jsonl into the container
-COPY sessions.jsonl ./sessions.jsonl
-
 EXPOSE 8080
 
 RUN adduser -h /src/ -D -s /bin/sh nitter
